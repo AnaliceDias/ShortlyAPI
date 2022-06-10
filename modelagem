@@ -1,0 +1,22 @@
+usuarios {
+	id:
+	nome:
+	email:
+	senha:
+}
+
+tokens {
+	id:
+	usuarioId:
+	token: unique
+	validade: boolean
+}
+
+linksEncurtados {
+	id:
+	usuarioId:
+	linkOriginal: ""
+	linkEncurtado:
+	numeroDeCliques: default 0
+}
+
