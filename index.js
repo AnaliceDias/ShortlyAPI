@@ -5,6 +5,6 @@ dotenv.config();
 
 const PORT = process.env.PORT;
 
-app.listen(() => {
+app.listen(PORT , () => {
     console.log(`Servidor no ar na porta: ${PORT}`);
 });
