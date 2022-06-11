@@ -64,3 +64,41 @@ export async function redirecionarUruario(req , res){
         res.sendStatus(404);
     }
 }
+
+export async function verificarPropriedade(req , res , next){
+    const {authorization} = req.headers;
+    const token = authorization?.replace('Bearer ', '');
+    const UrlId = req.params.id;
+    
+    try{
+        const solicitarToken = await db.query(`
+        SELECT usuarios.token FROM "urlsEncurtadas" as "URLs"
+        JOIN usuarios
+        ON usuarios.id =  "usuarioId"
+        WHERE "URLs".id = $1
+        `, [UrlId]);
+
+        if(solicitarToken.rows[0].token === token){
+            res.status(401).send("Você não é o proprietário dessa URL e por isso não pode apagá-la");
+        }else{
+            next();
+        }
+
+    }catch(err){
+        res.sendStatus(404);
+    }
+}
+
+export async function deletarUrl(req , res){
+    const UrlId = req.params.id;
+    
+    try{
+        const apagarURL = await db.query(`
+            DELETE FROM "urlsEncurtadas" WHERE id = $1
+            `, [UrlId]);
+            
+            res.sendStatus(204);
+    }catch(err){
+        res.sendStatus(404);
+    }
+}
