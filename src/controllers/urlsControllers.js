@@ -45,6 +45,21 @@ export async function buscarURL(req , res){
     }
 }
 
+export async function somarUmClique(req , res , next){
+    const URL = req.params.shortUrl;
+    try{
+        const maisUmClique = await db.query(`
+        UPDATE "urlsEncurtadas" SET "numeroCliques" = "numeroCliques" + 1
+        WHERE "urlEncurtada" = $1;
+        `, [URL]);
+
+        next();
+
+    }catch(err){
+        res.sendStatus(404);
+    }
+}
+
 export async function redirecionarUruario(req , res){
     
     try{
